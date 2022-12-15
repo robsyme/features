@@ -1,24 +1,18 @@
 
-# Nextflow (nextflow)
+# Nextflow
 
-Nextflow feature
+A feature to install Nextflow to allow quick and easy pipeline development in Github Codespaces
 
 ## Example Usage
 
 ```json
 "features": {
-    "ghcr.io/robsyme/features/nextflow:1": {}
+    "ghcr.io/robsyme/features/nextflow:1": {
+        "version": "latest"
+    }
 }
 ```
 
 ## Options
 
-| Options Id | Description | Type | Default Value |
-|-----|-----|-----|-----|
-
-
-
-
----
-
-_Note: This file was auto-generated from the [devcontainer-feature.json](https://github.com/robsyme/features/blob/main/src/nextflow/devcontainer-feature.json).  Add additional notes to a `NOTES.md`._
+No options required.
