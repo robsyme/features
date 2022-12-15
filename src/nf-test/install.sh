@@ -3,7 +3,6 @@
 # Maintainer: Rob Syme
 
 USERNAME="${USERNAME:-"${_REMOTE_USER:-"automatic"}"}"
-NEXTFLOW_DIR=/opt/nextflow
 set -e
 
 if [ "$(id -u)" -ne 0 ]; then
@@ -12,6 +11,7 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 # Determine the appropriate non-root user
+echo "Before username check, username==$USERNAME"
 if [ "${USERNAME}" = "auto" ] || [ "${USERNAME}" = "automatic" ]; then
     USERNAME=""
     POSSIBLE_USERS=("vscode" "node" "codespace" "$(awk -v val=1000 -F ":" '$3==val{print $1}' /etc/passwd)")
@@ -28,8 +28,8 @@ elif [ "${USERNAME}" = "none" ] || ! id -u ${USERNAME} > /dev/null 2>&1; then
     USERNAME=root
 fi
 
-if ! cat /etc/group | grep -e "^nextflow:" > /dev/null 2>&1; then
-    groupadd -r nextflow
+if ! cat /etc/group | grep -e "^nftest:" > /dev/null 2>&1; then
+    groupadd -r nftest
 fi
 
 apt_get_update()
@@ -49,17 +49,24 @@ check_packages() {
 
 check_packages curl ca-certificates zip unzip sed default-jdk
 
-usermod -a -G nextflow "${USERNAME}"
+usermod -a -G nftest "${USERNAME}"
 
-echo "Installing Nextflow..."
+echo "Installing nf-test for user $USERNAME..."
 
-mkdir -p $NEXTFLOW_DIR/bin
-cd $NEXTFLOW_DIR/bin
-curl -s https://get.nextflow.io | bash
+NFTEST_DIR=/opt/nf-test
+mkdir -p $NFTEST_DIR/bin
+chown -R "${USERNAME}:nftest" "${NFTEST_DIR}"
+chmod -R g+r+w "${NFTEST_DIR}"
 
-chown -R "${USERNAME}:nextflow" "${NEXTFLOW_DIR}"
-chmod -R g+r+w "${NEXTFLOW_DIR}"
+cd $NFTEST_DIR/bin
+curl -fsSL https://code.askimed.com/install/nf-test | bash
+find "${NFTEST_DIR}" -type d -print0 | xargs -n 1 -0 chmod g+s
 
-find "${NEXTFLOW_DIR}" -type d -print0 | xargs -n 1 -0 chmod g+s
+set -x 
+if [ "${USERNAME}" != "root" ]; then
+    cp -R ~/.nf-test ${_REMOTE_USER_HOME}
+    chown -R "${_REMOTE_USER}:${_REMOTE_USER}" "${_REMOTE_USER_HOME}/.nf-test"
+fi
+set +x
 
 echo "Done!"

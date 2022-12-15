@@ -4,6 +4,9 @@
     "version": "1.0.0",
     "description": "Nextflow feature",
     "options": {},
+    "containerEnv": {
+        "PATH": "/opt/nextflow/bin:${PATH}"
+    },
     "installsAfter": [
         "ghcr.io/devcontainers/features/java"
     ]
