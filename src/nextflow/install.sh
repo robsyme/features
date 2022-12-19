@@ -63,7 +63,7 @@ chmod -R g+r+w "${NEXTFLOW_DIR}"
 find "${NEXTFLOW_DIR}" -type d -print0 | xargs -n 1 -0 chmod g+s
 
 set -x 
-if [[ $(id -u -n) != "${_REMOTE_USER}" ]]; then
+if [[ $(id -u -n) != "${_REMOTE_USER}" ]] && [ -d "${_REMOTE_USER_HOME}/.nextflow" ]; then
     chown -R "${_REMOTE_USER}:${_REMOTE_USER}" "${_REMOTE_USER_HOME}/.nextflow"
 fi
 set +x
