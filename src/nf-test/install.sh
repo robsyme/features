@@ -63,7 +63,7 @@ curl -fsSL https://code.askimed.com/install/nf-test | bash
 find "${NFTEST_DIR}" -type d -print0 | xargs -n 1 -0 chmod g+s
 
 set -x 
-if [ "${USERNAME}" != "root" ]; then
+if [[ $(id -u -n) != "${_REMOTE_USER}" ]]; then
     cp -R ~/.nf-test ${_REMOTE_USER_HOME}
     chown -R "${_REMOTE_USER}:${_REMOTE_USER}" "${_REMOTE_USER_HOME}/.nf-test"
 fi
