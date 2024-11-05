@@ -5,7 +5,8 @@
 set -eux
 
 USERNAME="${USERNAME:-"${_REMOTE_USER:-"automatic"}"}"
-NEXTFLOW_DIR=${_REMOTE_USER_HOME}/.local/bin
+# NEXTFLOW_DIR=${_REMOTE_USER_HOME}/.local/bin
+NEXTFLOW_DIR=/usr/local/bin
 
 
 if [ "$(id -u)" -ne 0 ]; then

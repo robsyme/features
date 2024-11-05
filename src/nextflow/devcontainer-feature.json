@@ -4,9 +4,9 @@
     "version": "1.2.0",
     "description": "Nextflow feature",
     "options": {},
-    "containerEnv": {
-        "PATH": "${_REMOTE_USER_HOME}/.local/bin:${PATH}"
-    },
+    // "containerEnv": {
+    //     "PATH": "${_REMOTE_USER_HOME}/.local/bin:${PATH}"
+    // },
     "installsAfter": [
         "ghcr.io/devcontainers/features/java"
     ]
