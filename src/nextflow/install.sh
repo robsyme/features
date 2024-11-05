@@ -3,7 +3,7 @@
 # Maintainer: Rob Syme
 
 USERNAME="${USERNAME:-"${_REMOTE_USER:-"automatic"}"}"
-NEXTFLOW_DIR=/opt/nextflow
+NEXTFLOW_DIR=${_REMOTE_USER_HOME}/.local/bin
 set -e
 
 if [ "$(id -u)" -ne 0 ]; then
@@ -53,8 +53,8 @@ usermod -a -G nextflow "${USERNAME}"
 
 echo "Installing Nextflow..."
 
-mkdir -p $NEXTFLOW_DIR/bin
-cd $NEXTFLOW_DIR/bin
+mkdir -p $NEXTFLOW_DIR
+cd $NEXTFLOW_DIR
 curl -s https://get.nextflow.io | bash
 
 chown -R "${USERNAME}:nextflow" "${NEXTFLOW_DIR}"
@@ -67,6 +67,5 @@ if [[ $(id -u -n) != "${_REMOTE_USER}" ]] && [ -d "${_REMOTE_USER_HOME}/.nextflo
     chown -R "${_REMOTE_USER}:${_REMOTE_USER}" "${_REMOTE_USER_HOME}/.nextflow"
 fi
 set +x
-
 
 echo "Done!"
